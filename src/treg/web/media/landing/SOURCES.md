@@ -13,11 +13,12 @@ See `docs/context/interface/seo.md` for landing behavior.
 
 | Dependency | Version | Delivery and license |
 |---|---|---|
-| Three.js, RoomEnvironment, FontLoader and Helvetiker font | 0.180.0 | jsDelivr npm CDN, pinned together by the import map in `landing.html`; MIT (font license in its metadata) |
-| Lenis JavaScript and CSS | 1.3.26 | jsDelivr npm CDN, pinned in `landing.html`; MIT |
+| Three.js, RoomEnvironment, FontLoader and Helvetiker font | 0.180.0 | jsDelivr npm CDN, pinned together by the import map in `landing.html`, every module with an SRI hash in its `integrity` map and the font fetched with one; MIT (font license in its metadata) |
+| Lenis JavaScript and CSS | 1.3.26 | jsDelivr npm CDN, pinned in `landing.html` with SRI hashes; MIT |
 | `assets/*` | Reference revision above | Agent marks; `assets/LOBEHUB-LICENSE` retained. The prototype's orange treg mark is omitted. |
 
 Use the [Three.js import-map installation](https://threejs.org/manual/pages/installation.html)
 with one exact version and CDN for the full module graph. No third-party library builds are
 committed here. A failed Three.js module download activates the static fallback; missing Lenis
-leaves native scrolling available. Run landing E2E, SEO and tracking checks after upgrades.
+leaves native scrolling available. An upgrade recomputes every hash (`curl -sL URL | openssl dgst -sha384 -binary | openssl base64 -A`).
+Run landing E2E, SEO and tracking checks after upgrades.

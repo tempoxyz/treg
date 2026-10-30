@@ -671,7 +671,8 @@ shared HTTP client. `/auth/logout` remains an HTTP-only cookie action.
   (`GET /tutorial` - standalone CLI tutorial). The **dashboard tour** is a `StaticFiles(html=True)` mount
   at `/dashboard-tour/` (serves `web/tour/` - `tour.js`, the standalone `index.html`, and the WebP
   `img/`). **Package-generated front-end runtimes** are an `_ImmutableStatic` mount at `/vendor/` (serves
-  `web/vendor/` - Vue copied from the npm lockfile at build time, version-pinned in the filename, hence `Cache-Control: immutable`):
+  `web/vendor/` - Vue and posthog-js's no-external array build copied from the npm lockfile at build time by
+  `frontend/scripts/copy-runtime.mjs`, version-pinned in the filename, hence `Cache-Control: immutable`):
   the dashboard must not depend on a CDN a visitor's network may not reach, see
   [dashboard](dashboard.md). `favicon` (`GET /favicon.svg` + `/favicon.ico`). `llms_txt` (`GET /llms.txt`) serves
   `web/llms.txt` as `text/plain` with `{BASE}` templated from `public_url` - the [llms.txt](https://llmstxt.org)
@@ -680,7 +681,8 @@ shared HTTP client. `/auth/logout` remains an HTTP-only cookie action.
   `sitetrack_js` (`GET /sitetrack.js`, no-cache) serves `web/sitetrack.js` with `{POSTHOG_KEY}` /
   `{POSTHOG_HOST}` templated from settings: the always-on first-party `treg_utm` first-touch cookie
   (utm_* + referring host, read by `_utm_attribution_from` / `_stamp_utm` in BOTH signup doors, `/users`
-  and `/orgs`) plus the PostHog bootstrap with pageviews ON. Loaded by every public page - landing,
+  and `/orgs`) plus the PostHog bootstrap with pageviews ON, which loads posthog-js from the same-origin `/vendor/` build
+  with `disable_external_dependency_loading` so PostHog never injects scripts from its CDN. Loaded by every public page - landing,
   use-case pages, resources, tutorial, and the SPA - so analytics sees the visitor's first hop rather
   than the post-OAuth `/app` landing. Without a key the analytics half is inert (empty string).
   `adtrack_js` (`GET /adtrack.js`, no-cache) serves the first-party ad-click capture script loaded by
