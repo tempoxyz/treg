@@ -103,6 +103,7 @@ node_modules
 /frontend/test-results/
 /frontend/playwright-report/
 
-# Global Vue runtime copied from the npm lockfile during the frontend build.
+# Browser runtimes (Vue, posthog-js) copied from the npm lockfile during the frontend build.
 /src/treg/web/vendor/*.js
 /src/treg/web/vendor/LICENSE
+/src/treg/web/vendor/LICENSE-*
