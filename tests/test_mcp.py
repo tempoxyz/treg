@@ -1677,7 +1677,7 @@ async def test_catalog_get_stays_within_an_mcp_client_output_limit(clients):
             results[endpoint_id] = r.json()["result"]
     routed = results["treg.people.search"]["structuredContent"]
     crowded = results["aiark.people.search"]["structuredContent"]
-    assert routed["routing"]["plan"] and routed["related_capabilities"] and not routed["siblings"]
+    assert routed["routing"]["plan"] and routed["related_capabilities"] and not routed.get("siblings")
     assert len(crowded["siblings"]) > 20
     for result in results.values():
         assert len(json.dumps(result)) < 100_000
