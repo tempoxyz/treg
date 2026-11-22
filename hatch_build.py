@@ -19,4 +19,8 @@ class CustomBuildHook(BuildHookInterface):
         for url in re.findall(r'src="([^"]*/vendor/vue-[^"]+\.js)"', (web / "enrich-arena.html").read_text()):
             if not (web / url.lstrip("/")).is_file():
                 raise RuntimeError("Vue runtime is missing. Run bash scripts/build-dashboard.sh.")
-        build_data["artifacts"].extend(["src/treg/web/vendor/*.js", "src/treg/web/vendor/LICENSE"])
+        for url in re.findall(r'"(/vendor/posthog-js-[^"]+\.js)"', (web / "sitetrack.js").read_text()):
+            if not (web / url.lstrip("/")).is_file():
+                raise RuntimeError("posthog-js runtime is missing. Run bash scripts/build-dashboard.sh.")
+        build_data["artifacts"].extend(["src/treg/web/vendor/*.js", "src/treg/web/vendor/LICENSE",
+                                        "src/treg/web/vendor/LICENSE-*"])
